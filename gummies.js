@@ -38,12 +38,7 @@ const division = (a, b) => a / b
 
 //Función del interés
 
-function interesProducto (meses){
-    // valor total * 0.02 = valor del interés mensual
-    // valor interes mensual * número de meses = valor del interés total
-    // valor total con interes = valor total + valor del interés total
-    // cuota mensual = (valor total / numero de meses) + valor del interés mensual 
-}
+const interesProducto = a => a * 0.02
 
 //Inventario de productos
 
@@ -92,55 +87,169 @@ if (usuario == 1){
     console.log('Estimado cliente, siempre es un placer atenderte')
     let seleccionCliente = prompt('¿Deseas averiguar sobre productos o servicios?').toLowerCase()
     if (seleccionCliente == 'productos'){
-        let seleccionClienteProductos = prompt('¿Buscar o comprar?').toLowerCase()
+        let seleccionClienteProductos = prompt('¿Buscar, comprar o pagar?').toLowerCase()
         switch(seleccionClienteProductos){
             case 'buscar':
                 const busquedaProductos = prompt('¿Qué producto desea buscar?')
                 const resultadoBusquedaP = inventarioProductos.find(elementoResultanteP => elementoResultanteP.nombre === busquedaProductos)
                 console.log('El producto que busca es: ')
                 console.log(resultadoBusquedaP)
+                break
             case 'comprar':
-
+                console.log('Tenemos disponibles los siguientes productos: ')
+                console.log(inventarioProductos)
+                let compraProductos = prompt('¿Qué producto desea comprar?')
+                let cantidadProductosComprados = parseInt(prompt('¿Cuántas unidades desea comprar?'))
+                let resultadoProductoComprado = inventarioProductos.find(elementoResultanteP => elementoResultanteP.nombre === compraProductos)
+                let precioProductoComprado = multiplicacion(resultadoProductoComprado.precio, cantidadProductosComprados)
+                let precioIvaProducto = calculoIva(precioProductoComprado)
+                let precioProductoTotal = suma(precioProductoComprado, precioIvaProducto)
+                console.log('El producto comprado es: ')
+                console.log(resultadoProductoComprado)
+                console.log('El total a pagar es $' + precioProductoTotal)
+                let comprarMas = prompt('¿Desea comprar otros productos?')
+                while (comprarMas == 'si'){
+                    let compraProductos = prompt('¿Qué producto desea comprar?')
+                    let cantidadProductosComprados = parseInt(prompt('¿Cuántas unidades desea comprar?'))
+                    let resultadoProductoComprado = inventarioProductos.find(elementoResultanteP => elementoResultanteP.nombre === compraProductos)
+                    let precioProductoComprado = multiplicacion(resultadoProductoComprado.precio, cantidadProductosComprados)
+                    let precioIvaProducto = calculoIva(precioProductoComprado)
+                    let precioProductoTotal = suma(precioProductoComprado, precioIvaProducto)
+                    console.log('El producto comprado es: ')
+                    console.log(resultadoProductoComprado)
+                    console.log('El total a pagar es $' + precioProductoTotal)
+                    let comprarMas = prompt('¿Desea comprar otros productos')
+                    if (comprarMas != 'si'){
+                    break
+                    }                              
+                }                        
+                    console.log('¡¡Gracias por su compra!!')
+                    console.log('¡Disfrute de la página!')
+                    break   
+            case 'pagar':
+                let cantidadDeuda = parseInt(prompt('¿Cuánto debe?'))
+                let seleccionSobreDeuda = prompt('Desea hacer un: abono, pago total o dividir en cuotas').toLowerCase()
+                switch(seleccionSobreDeuda){
+                    case 'abono':
+                        let abonoDeuda = parseInt(prompt('¿Cuánto desea abonar?'))
+                        let saldoSobreDeuda = resta(cantidadDeuda, abonoDeuda)
+                        if(saldoSobreDeuda<=0){
+                            console.log('Su deuda se pagó totalmente')
+                        }
+                        else{
+                            console.log('Todavía debe: $' + saldoSobreDeuda)  
+                        } 
+                        break
+                    case 'pago total':
+                        console.log('Su deuda de $' +cantidadDeuda + ' se pagó totalmente')
+                        break
+                    case 'dividir en cuotas':
+                        let cantidadCuotas = parseInt(prompt('¿En cuántas cuotas desea dividir el pago?'))
+                        let pagoPorCuotas = division(cantidadDeuda, cantidadCuotas)
+                        let interesDeCuotas = interesProducto(pagoPorCuotas)
+                        let cuotaMensual = suma(pagoPorCuotas, interesDeCuotas)
+                        console.log('Sus cuotas mensuales son de $' +cuotaMensual)
+                        let pagoTotalIntereses = multiplicacion(cantidadCuotas, cuotaMensual)
+                        console.log('Su pago total es de $' +pagoTotalIntereses)
+                        break
+                    default:
+                        console.log('¡Disfrute de la página!')
+                        break
+                }
             default:
-                console.log('¡Disfruta de la página!')
+                console.log('¡Disfrute de la página!')
                 break
 
         }
-
-        //mostrar listado de productos
-        //Preguntar si desea comprar
-        //ciclo de compra
-        //Desea comprar varios del mismo producto
-        //Desea añadir o retirar productos
-        //pago de contado o por cuotas
-        //cálculos de pago por cuotas
-        //Mostrar el precio final
-
     }
     else if (seleccionCliente == 'servicios'){
-        let seleccionClienteServicios = prompt()
+        let seleccionClienteServicios = prompt('¿Buscar, comprar o pagar?').toLowerCase()
         switch(seleccionClienteServicios){
             case 'buscar':
-                
-            case 'comprar':
-
-            default:
-                console.log('¡Disfruta de la página!')
+                const busquedaServicios = prompt('¿Qué servicio desea buscar?')
+                const resultadoBusquedaS = inventarioServicios.find(elementoResultanteS => elementoResultanteS.nombre === busquedaServicios)
+                console.log('El servicio que busca es: ')
+                console.log(resultadoBusquedaS)
                 break
-
+                case 'comprar':
+                    console.log('Tenemos disponibles los siguientes servicios: ')
+                    console.log(inventarioServicios)
+                    let compraServicios = prompt('¿Qué servicio desea adquirir?')
+                    let resultadoServicioComprado = inventarioServicios.find(elementoResultanteS => elementoResultanteS.nombre === compraServicios)
+                    let precioIvaServicio = calculoIva(resultadoServicioComprado.precio)
+                    let precioServicioTotal = suma(resultadoServicioComprado.precio, precioIvaServicio)
+                    console.log('El servicio comprado es: ')
+                    console.log(resultadoServicioComprado)
+                    console.log('El total a pagar es $' + precioServicioTotal)
+                    console.log('Ingrese la fecha para recibir el servicio')
+                    let añoServicio = prompt('Ingrese el año')
+                    let mesServicio = prompt('Ingrese el mes')
+                    let diaServicio = prompt('Ingrese el día')
+                    let horaServicio = prompt('Ingrese la hora')
+                    fechaServicio = new Date(añoServicio, mesServicio, diaServicio, horaServicio)
+                    console.log('El servicio fue contratado para el ' +fechaServicio)
+                    let comprarMas = prompt('¿Desea adquirir otros servicios?')
+                    while (comprarMas == 'si'){
+                        let compraServicios = prompt('¿Qué servicio desea adquirir?')
+                        let resultadoServicioComprado = inventarioServicios.find(elementoResultanteS => elementoResultanteS.nombre === compraServicios)
+                        let precioIvaServicio = calculoIva(resultadoServicioComprado.precio)
+                        let precioServicioTotal = suma(resultadoServicioComprado.precio, precioIvaServicio)
+                        console.log('El servicio comprado es: ')
+                        console.log(resultadoServicioComprado)
+                        console.log('El total a pagar es $' + precioServicioTotal)
+                        console.log('Ingrese la fecha para recibir el servicio')
+                        let añoServicio = prompt('Ingrese el año')
+                        let mesServicio = prompt('Ingrese el mes')
+                        let diaServicio = prompt('Ingrese el día')
+                        let horaServicio = prompt('Ingrese la hora')
+                        fechaServicio = new Date(añoServicio, mesServicio, diaServicio, horaServicio)
+                        console.log('El servicio fue contratado para el ' +fechaServicio)
+                        let comprarMas = prompt('¿Desea comprar otros productos')
+                        if (comprarMas != 'si'){
+                        break
+                        }                              
+                    }                        
+                        console.log('¡¡Gracias por su compra!!')
+                        console.log('¡Disfrute de la página!')
+                        break   
+                case 'pagar':
+                    let cantidadDeuda = parseInt(prompt('¿Cuánto debe?'))
+                    let seleccionSobreDeuda = prompt('Desea hacer un: abono, pago total o dividir en cuotas').toLowerCase()
+                    switch(seleccionSobreDeuda){
+                        case 'abono':
+                            let abonoDeuda = parseInt(prompt('¿Cuánto desea abonar?'))
+                            let saldoSobreDeuda = resta(cantidadDeuda, abonoDeuda)
+                            if(saldoSobreDeuda<=0){
+                                console.log('Su deuda se pagó totalmente')
+                            }
+                            else{
+                                console.log('Todavía debe: $' + saldoSobreDeuda)  
+                            } 
+                            break
+                        case 'pago total':
+                            console.log('Su deuda de $' +cantidadDeuda + ' se pagó totalmente')
+                            break
+                        case 'dividir en cuotas':
+                            let cantidadCuotas = parseInt(prompt('¿En cuántas cuotas desea dividir el pago?'))
+                            let pagoPorCuotas = division(cantidadDeuda, cantidadCuotas)
+                            let interesDeCuotas = interesProducto(pagoPorCuotas)
+                            let cuotaMensual = suma(pagoPorCuotas, interesDeCuotas)
+                            console.log('Sus cuotas mensuales son de $' +cuotaMensual)
+                            let pagoTotalIntereses = multiplicacion(cantidadCuotas, cuotaMensual)
+                            console.log('Su pago total es de $' +pagoTotalIntereses)
+                            break
+                        default:
+                            console.log('¡Disfrute de la página!')
+                            break
+                    }
+            default:
+                console.log('¡Disfrute de la página!')
+                break
         }
-        //mostrar listado de servicios
-        //Preguntar si desea comprar
-        //ciclo de compra
-        //Añadir una fecha
-        //Mostrar el precio final
-        //Mostrar el agendamiento del servicio
     }
-
     else {
         console.log('¡Disfruta de la página!')
     }
-
 }
 
 //Inicio de interacción con el personal
@@ -157,7 +266,7 @@ else if (usuario == 2){
         case 'pagos':
             console.log('si')
         default:
-            console.log('¡Disfruta de la página!')
+            console.log('¡Disfrute de la página!')
             break
     }
 
@@ -177,45 +286,8 @@ else if (usuario == 2){
 //Cierre del simulador
 
 else {
-    console.log('¡Disfruta de la página!')
+    console.log('¡Disfrute de la página!')
 }
-
-
-
-/* 
-alert('Bienvenido a la página de PD Gummies')
-alert('Los mejores dulces y gomitas del país')
-let opcion = prompt('¿Desea comprar productos?').toLowerCase()
-
-if (opcion == 'si'){
-        let cantidadProducto = parseInt(prompt ('¿Cuántos productos desea?'))
-        if(cantidadProducto != 0){
-            let precioProducto = parseInt(prompt ('¿Cuál es el precio del producto?'))
-            let gravamen = parseInt(prompt ('¿Cuánto es el gravamen del producto?'))
-            let calculoImpuesto = (precioProducto * gravamen)/100
-            let precioTotal = cantidadPago(cantidadProducto,precioProducto,calculoImpuesto)
-            alert('El precio total a pagar es: ' + precioTotal)     
-        }
-        let comprarMas = prompt('¿Desea comprar otros productos?')
-        while (comprarMas == 'si'){
-            let cantidadProducto = parseInt(prompt ('¿Cuántos productos desea?'))
-        if(cantidadProducto != 0){
-            let precioProducto = parseInt(prompt ('¿Cuál es el precio del producto?'))
-            let gravamen = parseInt(prompt ('¿Cuánto es el gravamen del producto?'))
-            let calculoImpuesto = (precioProducto * gravamen)/100
-            let precioTotal = cantidadPago(cantidadProducto,precioProducto,calculoImpuesto)
-            alert('El precio total a pagar es: ' + precioTotal)     
-        }
-        let comprarMas = prompt('¿Desea comprar otros productos')
-        if (comprarMas != 'si'){
-            break
-        }
-        }
-        alert('¡¡Gracias por su compra!!')           
-}
-else{
-    alert('Disfrute de la página')
-} */
 
 // el interés se hace con un for
 
